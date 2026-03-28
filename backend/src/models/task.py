@@ -35,6 +35,6 @@ class TaskCreate(TaskBase):
     pass
 
 class TaskUpdate(SQLModel):
-    title: Optional[str] = Field(default=None, min_length=1, max_length=200)
-    description: Optional[str] = Field(default=None, max_length=1000)
-    status: Optional[TaskStatus] = None
+    title: Optional[str] = Field(default=None)
+    description: Optional[str] = Field(default=None)
+    status: Optional[TaskStatus] = Field(default=None)

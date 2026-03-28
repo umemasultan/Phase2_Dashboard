@@ -23,13 +23,8 @@ def read_tasks(
     limit: int = 100,
     status_filter: Optional[str] = None,
     session: Session = Depends(get_session),
-    current_user_email: str = Depends(get_current_user_email)
+    current_user: User = Depends(get_current_user)
 ):
-    # Get current user by email to check authorization
-    current_user = session.exec(select(User).where(User.email == current_user_email)).first()
-    if not current_user:
-        raise HTTPException(status_code=404, detail="User not found")
-
     # Ensure user can only access their own tasks
     if current_user.id != user_id:
         raise HTTPException(status_code=403, detail="Not authorized to access these tasks")
@@ -53,13 +48,8 @@ def create_task(
     user_id: int,
     task: TaskCreate,
     session: Session = Depends(get_session),
-    current_user_email: str = Depends(get_current_user_email)
+    current_user: User = Depends(get_current_user)
 ):
-    # Get current user by email to check authorization
-    current_user = session.exec(select(User).where(User.email == current_user_email)).first()
-    if not current_user:
-        raise HTTPException(status_code=404, detail="User not found")
-
     # Ensure user can only create tasks for themselves
     if current_user.id != user_id:
         raise HTTPException(status_code=403, detail="Not authorized to create tasks for this user")
@@ -83,13 +73,8 @@ def read_task(
     user_id: int,
     task_id: int,
     session: Session = Depends(get_session),
-    current_user_email: str = Depends(get_current_user_email)
+    current_user: User = Depends(get_current_user)
 ):
-    # Get current user by email to check authorization
-    current_user = session.exec(select(User).where(User.email == current_user_email)).first()
-    if not current_user:
-        raise HTTPException(status_code=404, detail="User not found")
-
     # Ensure user can only access their own tasks
     if current_user.id != user_id:
         raise HTTPException(status_code=403, detail="Not authorized to access these tasks")
@@ -105,13 +90,8 @@ def update_task(
     task_id: int,
     task_update: TaskUpdate,
     session: Session = Depends(get_session),
-    current_user_email: str = Depends(get_current_user_email)
+    current_user: User = Depends(get_current_user)
 ):
-    # Get current user by email to check authorization
-    current_user = session.exec(select(User).where(User.email == current_user_email)).first()
-    if not current_user:
-        raise HTTPException(status_code=404, detail="User not found")
-
     # Ensure user can only update their own tasks
     if current_user.id != user_id:
         raise HTTPException(status_code=403, detail="Not authorized to update these tasks")
@@ -143,13 +123,8 @@ def delete_task(
     user_id: int,
     task_id: int,
     session: Session = Depends(get_session),
-    current_user_email: str = Depends(get_current_user_email)
+    current_user: User = Depends(get_current_user)
 ):
-    # Get current user by email to check authorization
-    current_user = session.exec(select(User).where(User.email == current_user_email)).first()
-    if not current_user:
-        raise HTTPException(status_code=404, detail="User not found")
-
     # Ensure user can only delete their own tasks
     if current_user.id != user_id:
         raise HTTPException(status_code=403, detail="Not authorized to delete these tasks")
@@ -167,13 +142,8 @@ def toggle_task_completion(
     user_id: int,
     task_id: int,
     session: Session = Depends(get_session),
-    current_user_email: str = Depends(get_current_user_email)
+    current_user: User = Depends(get_current_user)
 ):
-    # Get current user by email to check authorization
-    current_user = session.exec(select(User).where(User.email == current_user_email)).first()
-    if not current_user:
-        raise HTTPException(status_code=404, detail="User not found")
-
     # Ensure user can only update their own tasks
     if current_user.id != user_id:
         raise HTTPException(status_code=403, detail="Not authorized to update these tasks")

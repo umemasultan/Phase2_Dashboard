@@ -52,6 +52,9 @@ export default function TaskDetailPage() {
         console.error('Error fetching task:', error);
         if (error instanceof Error && error.message.includes('404')) {
           setTask(null);
+        } else if (error instanceof Error && (error.message.includes('Unauthorized') || error.message.includes('401'))) {
+          // Redirect to login if unauthorized
+          router.push('/auth/login');
         } else {
           setError(error instanceof Error ? error.message : 'An error occurred while fetching the task');
         }
@@ -92,7 +95,11 @@ export default function TaskDetailPage() {
       setIsEditing(false);
       setError('');
     } catch (err: any) {
-      setError(err.message || 'An error occurred while saving the task');
+      if (err.message && (err.message.includes('Unauthorized') || err.message.includes('401'))) {
+        router.push('/auth/login');
+      } else {
+        setError(err.message || 'An error occurred while saving the task');
+      }
     }
   };
 
@@ -116,18 +123,22 @@ export default function TaskDetailPage() {
       router.push('/');
       router.refresh();
     } catch (err: any) {
-      setError(err.message || 'An error occurred while deleting the task');
+      if (err.message && (err.message.includes('Unauthorized') || err.message.includes('401'))) {
+        router.push('/auth/login');
+      } else {
+        setError(err.message || 'An error occurred while deleting the task');
+      }
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex">
-        <Sidebar />
-        <div className="flex-1 flex flex-col md:ml-0">
-          <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-700 dark:via-purple-800/20 dark:to-indigo-800/20 transition-all duration-500">
+        <Navbar />
+        <div className="flex">
+          <Sidebar />
           <div className="flex-1 flex items-center justify-center">
-            <p>Loading task...</p>
+            <p className="text-gray-600 dark:text-gray-400">Loading task...</p>
           </div>
         </div>
       </div>
@@ -135,29 +146,15 @@ export default function TaskDetailPage() {
   }
 
   if (!task) {
-    if (loading) {
-      return (
-        <div className="min-h-screen bg-gray-50 flex">
-          <Sidebar />
-          <div className="flex-1 flex flex-col md:ml-0">
-            <Navbar />
-            <div className="flex-1 flex items-center justify-center">
-              <p>Loading task...</p>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     return (
-      <div className="min-h-screen bg-gray-50 flex">
-        <Sidebar />
-        <div className="flex-1 flex flex-col md:ml-0">
-          <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-700 dark:via-purple-800/20 dark:to-indigo-800/20 transition-all duration-500">
+        <Navbar />
+        <div className="flex">
+          <Sidebar />
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
-              <p className="text-red-500">Task not found</p>
-              <Link href="/" className="text-blue-600 hover:underline mt-4 inline-block">
+              <p className="text-red-500 dark:text-red-400">Task not found</p>
+              <Link href="/" className="text-[#15173D] dark:text-purple-400 hover:underline mt-4 inline-block">
                 Back to Dashboard
               </Link>
             </div>
@@ -168,129 +165,132 @@ export default function TaskDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <Sidebar />
-      <div className="flex-1 flex flex-col md:ml-0">
-        <Navbar />
-        <main className="flex-1 max-w-3xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-          <Link
-            href="/"
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6"
-          >
-            ← Back to Dashboard
-          </Link>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-indigo-900/20 transition-all duration-500">
+      <Navbar />
+      <div className="flex">
+        <Sidebar />
+        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto">
+            <Link
+              href="/"
+              className="inline-flex items-center text-[#050E3C] dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300 mb-5 transition-colors font-semibold"
+            >
+              ← Back to Dashboard
+            </Link>
 
-          {error && (
-            <div className="mb-4 rounded-md bg-red-50 p-4">
-              <div className="text-sm text-red-700">{error}</div>
-            </div>
-          )}
-
-          {isEditing ? (
-            <TaskForm
-              title={title}
-              setTitle={setTitle}
-              description={description}
-              setDescription={setDescription}
-              status={status}
-              setStatus={setStatus}
-              error={error}
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSave();
-              }}
-              submitText="Save Changes"
-              isEditing={true}
-              onCancel={() => {
-                setIsEditing(false);
-                // Reset form to original values
-                setTitle(task.title);
-                setDescription(task.description);
-                setStatus(task.status);
-                setError('');
-              }}
-            />
-          ) : (
-            <div className="bg-white shadow-md rounded-lg p-6">
-              <div className="mb-4">
-                <h2 className="text-2xl font-bold text-gray-900">{task.title}</h2>
+            {error && (
+              <div className="mb-4 rounded-md bg-red-50 dark:bg-red-900/30 p-4">
+                <div className="text-sm text-red-700 dark:text-red-400">{error}</div>
               </div>
+            )}
 
-              <div className="mb-6">
-                <p className="text-gray-700 whitespace-pre-wrap">{task.description}</p>
-              </div>
-
-              <div className="mb-6">
-                <div className="flex flex-wrap items-center">
-                  <span className="mr-4">
-                    <span className="text-sm font-medium text-gray-700">Status:</span>
-                  </span>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      task.status === 'pending'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : task.status === 'in-progress'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-green-100 text-green-800'
-                    }`}
-                  >
-                    {task.status.replace('-', ' ')}
-                  </span>
+            {isEditing ? (
+              <TaskForm
+                title={title}
+                setTitle={setTitle}
+                description={description}
+                setDescription={setDescription}
+                status={status}
+                setStatus={setStatus}
+                error={error}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSave();
+                }}
+                submitText="Save Changes"
+                isEditing={true}
+                onCancel={() => {
+                  setIsEditing(false);
+                  setTitle(task.title);
+                  setDescription(task.description || '');
+                  setStatus(task.status);
+                  setError('');
+                }}
+              />
+            ) : (
+              <div className="bg-white dark:bg-gray-700 shadow-2xl rounded-xl p-5 transition-colors border border-gray-200 dark:border-gray-600">
+                <div className="mb-3">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">{task.title}</h2>
                 </div>
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                  <p className="text-sm text-gray-600">Created At</p>
-                  <p className="text-gray-900">{task.createdAt.toLocaleString()}</p>
+                <div className="mb-5">
+                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap text-sm">{task.description}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">Last Updated</p>
-                  <p className="text-gray-900">{task.updatedAt.toLocaleString()}</p>
-                </div>
-              </div>
 
-              <div className="flex flex-col sm:flex-row sm:justify-end sm:space-x-3 space-y-3 sm:space-y-0 pt-4 border-t border-gray-200">
-                <Button
-                  onClick={async () => {
-                    try {
-                      const userId = getCurrentUserIdFromToken();
-                      if (userId) {
-                        await taskApi.toggleComplete(userId, taskId);
-                        // Refresh task data
-                        const updatedTask = await taskApi.getForUser(userId, taskId);
-                        setTask(updatedTask);
-                        setStatus(updatedTask.status);
-                      } else {
-                        // Fallback behavior - just change the status locally and save
-                        const newStatus = status === 'completed' ? 'pending' : 'completed';
-                        setStatus(newStatus);
-                        const updatedTask = await taskApi.update(taskId, {
-                          title: title.trim(),
-                          description: description.trim() || '',
-                          status: newStatus
-                        });
-                        setTask(updatedTask);
+                <div className="mb-5">
+                  <div className="flex flex-wrap items-center">
+                    <span className="mr-3">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Status:</span>
+                    </span>
+                    <span
+                      className={`px-3 py-1 rounded-xl text-xs font-bold ${
+                        task.status === 'pending'
+                          ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+                          : task.status === 'in-progress'
+                            ? 'bg-gradient-to-r from-[#050E3C] to-purple-600 text-white'
+                            : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
+                      }`}
+                    >
+                      {task.status.replace('-', ' ')}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
+                  <div>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 font-semibold">Created At</p>
+                    <p className="text-sm text-gray-900 dark:text-white">{task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 font-semibold">Last Updated</p>
+                    <p className="text-sm text-gray-900 dark:text-white">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:justify-end sm:space-x-3 space-y-2 sm:space-y-0 pt-3 border-t border-gray-200 dark:border-gray-700">
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const userId = getCurrentUserIdFromToken();
+                        if (userId) {
+                          await taskApi.toggleComplete(userId, taskId);
+                          const updatedTask = await taskApi.getForUser(userId, taskId);
+                          setTask(updatedTask);
+                          setStatus(updatedTask.status);
+                        } else {
+                          const newStatus = status === 'completed' ? 'pending' : 'completed';
+                          setStatus(newStatus);
+                          const updatedTask = await taskApi.update(taskId, {
+                            title: title.trim(),
+                            description: description.trim() || '',
+                            status: newStatus
+                          });
+                          setTask(updatedTask);
+                        }
+                      } catch (err: any) {
+                        if (err.message && (err.message.includes('Unauthorized') || err.message.includes('401'))) {
+                          router.push('/auth/login');
+                        } else {
+                          setError(err.message || 'An error occurred while updating the task');
+                        }
                       }
-                    } catch (err: any) {
-                      setError(err.message || 'An error occurred while updating the task');
-                    }
-                  }}
-                  variant={status === 'completed' ? 'secondary' : 'primary'}
-                  size="md"
-                >
-                  {status === 'completed' ? 'Mark Incomplete' : 'Mark Complete'}
-                </Button>
-                <Button
-                  onClick={handleDelete}
-                  variant="danger"
-                  size="md"
-                >
-                  Delete Task
-                </Button>
+                    }}
+                    variant={status === 'completed' ? 'secondary' : 'primary'}
+                    size="md"
+                  >
+                    {status === 'completed' ? 'Mark Incomplete' : 'Mark Complete'}
+                  </Button>
+                  <Button
+                    onClick={handleDelete}
+                    variant="danger"
+                    size="md"
+                  >
+                    Delete Task
+                  </Button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </main>
       </div>
     </div>

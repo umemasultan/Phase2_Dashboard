@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/navbar';
@@ -8,7 +8,7 @@ import Sidebar from '@/components/sidebar';
 import { taskApi } from '@/lib/api';
 import TaskForm from '@/components/TaskForm';
 import Button from '@/components/Button';
-import { getCurrentUserIdFromToken } from '@/lib/auth';
+import { getToken } from '@/lib/auth';
 
 export default function CreateTaskPage() {
   const [title, setTitle] = useState('');
@@ -16,6 +16,13 @@ export default function CreateTaskPage() {
   const [status, setStatus] = useState<'pending' | 'in-progress' | 'completed'>('pending');
   const [error, setError] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    // Redirect to login if user is not authenticated
+    if (!getToken()) {
+      router.push('/auth/login');
+    }
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,23 +33,12 @@ export default function CreateTaskPage() {
     }
 
     try {
-      // Get current user ID and use the new API endpoint
-      const userId = getCurrentUserIdFromToken();
-      if (userId) {
-        // Use the new spec-compliant API endpoint
-        await taskApi.createForUser(userId, {
-          title: title.trim(),
-          description: description.trim() || '',
-          status
-        });
-      } else {
-        // Fallback to the old endpoint if we can't get user ID
-        await taskApi.create({
-          title: title.trim(),
-          description: description.trim() || '',
-          status
-        });
-      }
+      // Use the standard create endpoint which automatically assigns the task to the authenticated user
+      await taskApi.create({
+        title: title.trim(),
+        description: description.trim() || '',
+        status
+      });
 
       router.push('/');
       router.refresh();
@@ -52,33 +48,35 @@ export default function CreateTaskPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <Sidebar />
-      <div className="flex-1 flex flex-col md:ml-0">
-        <Navbar />
-        <main className="flex-1 max-w-3xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-          <Link
-            href="/"
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6"
-          >
-            ← Back to Dashboard
-          </Link>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-indigo-900/20 transition-all duration-500">
+      <Navbar />
+      <div className="flex">
+        <Sidebar />
+        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto">
+            <Link
+              href="/"
+              className="inline-flex items-center text-[#050E3C] dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300 mb-5 transition-colors font-semibold"
+            >
+              ← Back to Dashboard
+            </Link>
 
-          <TaskForm
-            title={title}
-            setTitle={setTitle}
-            description={description}
-            setDescription={setDescription}
-            status={status}
-            setStatus={setStatus}
-            error={error}
-            onSubmit={handleSubmit}
-            submitText="Create Task"
-          />
-          <div className="mt-4">
-            <Button href="/" variant="outline" size="md">
-              Cancel
-            </Button>
+            <TaskForm
+              title={title}
+              setTitle={setTitle}
+              description={description}
+              setDescription={setDescription}
+              status={status}
+              setStatus={setStatus}
+              error={error}
+              onSubmit={handleSubmit}
+              submitText="Create Task"
+            />
+            <div className="mt-4">
+              <Button href="/" variant="outline" size="md">
+                Cancel
+              </Button>
+            </div>
           </div>
         </main>
       </div>

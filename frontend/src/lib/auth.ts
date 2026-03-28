@@ -48,8 +48,17 @@ export const handleUnauthorized = (): void => {
   }
 };
 
+// Define JWT payload type
+interface JwtPayload {
+  sub: string;
+  user_id?: number;
+  exp?: number;
+  iat?: number;
+  [key: string]: any;
+}
+
 // Decode JWT token to get user info
-export const decodeToken = (token: string): any | null => {
+export const decodeToken = (token: string): JwtPayload | null => {
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');

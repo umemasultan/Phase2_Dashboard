@@ -1,5 +1,8 @@
+
+
 // API client for interacting with the backend
 // All requests will include JWT token from localStorage
+import { Task, User, convertApiTaskToFrontendTask, convertApiUserToFrontendUser } from '@/types/task';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -13,10 +16,12 @@ const getToken = (): string | null => {
 
 // Generic request function that adds JWT header
 const request = async (endpoint: string, options: RequestInit = {}) => {
+  const token = getToken();
+
   const config: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
-      ...(getToken() && { Authorization: `Bearer ${getToken()}` }),
+      ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
     ...options,
@@ -29,7 +34,9 @@ const request = async (endpoint: string, options: RequestInit = {}) => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('token');
     }
-    throw new Error('Unauthorized');
+    // Provide more detailed error message
+    const errorText = await response.text().catch(() => '');
+    throw new Error(`Unauthorized: ${errorText || 'Authentication required'}`);
   }
 
   if (!response.ok) {
@@ -37,7 +44,30 @@ const request = async (endpoint: string, options: RequestInit = {}) => {
     throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
   }
 
-  return response.json();
+  const data = await response.json();
+
+  // Convert date fields from API response to proper Date objects based on the endpoint
+  if (endpoint.includes('/api/tasks') && !endpoint.includes('/auth')) {
+    // Handle task responses - check if it's likely a task response
+    if (Array.isArray(data)) {
+      // Handle array of tasks - verify first element has task properties
+      if (data.length > 0 && typeof data[0] === 'object' && data[0] &&
+          'id' in data[0] && 'title' in data[0] && 'status' in data[0]) {
+        return data.map(task => convertApiTaskToFrontendTask(task));
+      }
+    } else if (data && typeof data === 'object' &&
+               'id' in data && 'title' in data && 'status' in data) {
+      // Handle single task - ensure it has all required task properties
+      return convertApiTaskToFrontendTask(data);
+    }
+  } else if (endpoint.includes('/api/auth') && endpoint.includes('/me')) {
+    // Handle user profile response - verify it has user properties
+    if (data && typeof data === 'object' && 'id' in data && 'email' in data) {
+      return convertApiUserToFrontendUser(data);
+    }
+  }
+
+  return data;
 };
 
 // Auth API functions (these don't require authentication)
@@ -53,6 +83,15 @@ const authRequest = async (endpoint: string, options: RequestInit = {}) => {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
   if (!response.ok) {
+    // Handle 401 in auth endpoints as well (shouldn't happen, but just in case)
+    if (response.status === 401) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+      }
+      const errorText = await response.text().catch(() => '');
+      throw new Error(`Unauthorized: ${errorText || 'Authentication required'}`);
+    }
+
     const errorData = await response.json().catch(() => ({}));
     throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
   }
@@ -62,23 +101,22 @@ const authRequest = async (endpoint: string, options: RequestInit = {}) => {
 
 // Task API functions
 export const taskApi = {
-  getAll: (statusFilter?: string): Promise<any[]> => {
-    // For now, using the current user's ID - in real implementation this would be retrieved from the token
-    // This requires getting the current user's ID, so for now we'll keep the old endpoint for compatibility
-    // TODO: Implement proper user ID retrieval from token
+  getAll: (statusFilter?: string): Promise<Task[]> => {
+    // This endpoint uses the authenticated user from the JWT token automatically
+    // The backend extracts the user ID from the JWT and returns only that user's tasks
     const url = statusFilter ? `/api/tasks?status_filter=${statusFilter}` : '/api/tasks';
     return request(url);
   },
 
-  getById: (id: number): Promise<any> => request(`/api/tasks/${id}`),
+  getById: (id: number): Promise<Task> => request(`/api/tasks/${id}`),
 
-  create: (taskData: { title: string; description?: string; status?: string }): Promise<any> =>
+  create: (taskData: { title: string; description?: string; status?: string }): Promise<Task> =>
     request('/api/tasks', {
       method: 'POST',
       body: JSON.stringify(taskData),
     }),
 
-  update: (id: number, taskData: { title: string; description?: string; status?: string }): Promise<any> =>
+  update: (id: number, taskData: { title: string; description?: string; status?: string }): Promise<Task> =>
     request(`/api/tasks/${id}`, {
       method: 'PUT',
       body: JSON.stringify(taskData),
@@ -90,23 +128,23 @@ export const taskApi = {
     }),
 
   // New API functions that match the spec
-  getAllForUser: (userId: number, statusFilter?: string): Promise<any[]> => {
+  getAllForUser: (userId: number, statusFilter?: string): Promise<Task[]> => {
     const url = statusFilter
       ? `/api/${userId}/tasks?status_filter=${statusFilter}`
       : `/api/${userId}/tasks`;
     return request(url);
   },
 
-  getForUser: (userId: number, taskId: number): Promise<any> =>
+  getForUser: (userId: number, taskId: number): Promise<Task> =>
     request(`/api/${userId}/tasks/${taskId}`),
 
-  createForUser: (userId: number, taskData: { title: string; description?: string; status?: string }): Promise<any> =>
+  createForUser: (userId: number, taskData: { title: string; description?: string; status?: string }): Promise<Task> =>
     request(`/api/${userId}/tasks`, {
       method: 'POST',
       body: JSON.stringify(taskData),
     }),
 
-  updateForUser: (userId: number, taskId: number, taskData: { title: string; description?: string; status?: string }): Promise<any> =>
+  updateForUser: (userId: number, taskId: number, taskData: { title: string; description?: string; status?: string }): Promise<Task> =>
     request(`/api/${userId}/tasks/${taskId}`, {
       method: 'PUT',
       body: JSON.stringify(taskData),
@@ -117,7 +155,7 @@ export const taskApi = {
       method: 'DELETE',
     }),
 
-  toggleComplete: (userId: number, taskId: number): Promise<any> =>
+  toggleComplete: (userId: number, taskId: number): Promise<Task> =>
     request(`/api/${userId}/tasks/${taskId}/complete`, {
       method: 'PATCH',
     }),
@@ -137,5 +175,5 @@ export const authApi = {
       body: JSON.stringify(userData),
     }),
 
-  getCurrentUser: (): Promise<any> => request('/api/auth/me'),
+  getCurrentUser: (): Promise<User> => request('/api/auth/me'),
 };
