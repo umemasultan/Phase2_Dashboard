@@ -17,4 +17,5 @@ if __name__ == "__main__":
 
     # Import the app from main module
     import main
-    uvicorn.run(main.app, host="127.0.0.1", port=8000, reload=False)
+    # Bind to 0.0.0.0 for Docker/Hugging Face Spaces
+    uvicorn.run(main.app, host="0.0.0.0", port=8000, reload=False)
