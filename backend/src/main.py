@@ -1,5 +1,6 @@
 import sys
 import os
+from contextlib import asynccontextmanager
 
 # Add the src directory to sys.path to handle imports properly
 src_dir = os.path.dirname(os.path.abspath(__file__))
@@ -13,12 +14,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import task, task_v2, auth
 from db.init_db import create_db_and_tables
 
-app = FastAPI(title="Task Manager API")
-
-# Initialize database tables
-@app.on_event("startup")
-def on_startup():
+# Initialize database tables using lifespan event handler
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
     create_db_and_tables()
+    yield
+    # Shutdown (if needed)
+
+app = FastAPI(title="Task Manager API", lifespan=lifespan)
 
 # Configure CORS
 app.add_middleware(
