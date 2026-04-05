@@ -17,6 +17,7 @@ build/
 *.exe
 *.dll
 *.so
+*.tsbuildinfo
 
 # Database
 *.db
