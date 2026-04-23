@@ -48,18 +48,33 @@ export default function CreateTaskPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-indigo-900/20 transition-all duration-500">
+    <div className="min-h-screen gradient-bg transition-all duration-500 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/30 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/30 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse-glow"></div>
+      </div>
+
       <Navbar />
-      <div className="flex">
+      <div className="flex relative z-10">
         <Sidebar />
-        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+        <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
             <Link
               href="/"
-              className="inline-flex items-center text-[#050E3C] dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300 mb-5 transition-colors font-semibold"
+              className="inline-flex items-center text-white/90 hover:text-white mb-6 transition-colors font-semibold glass-card px-4 py-2 rounded-xl hover:shadow-glow"
             >
-              ← Back to Dashboard
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to Dashboard
             </Link>
+
+            <div className="mb-6">
+              <h1 className="text-4xl font-black gradient-text mb-2">Create New Task</h1>
+              <p className="text-white/70">Add a new task to your workflow</p>
+            </div>
 
             <TaskForm
               title={title}
@@ -72,11 +87,6 @@ export default function CreateTaskPage() {
               onSubmit={handleSubmit}
               submitText="Create Task"
             />
-            <div className="mt-4">
-              <Button href="/" variant="outline" size="md">
-                Cancel
-              </Button>
-            </div>
           </div>
         </main>
       </div>

@@ -40,7 +40,9 @@ app.add_middleware(
         "http://127.0.0.1:3005",
         "https://task-manager-dashboard-nu.vercel.app",
         "https://task-manager-dashboard-umemasultans-projects.vercel.app",
-        "https://task-manager-dashboard-umemasultan-umemasultans-projects.vercel.app"
+        "https://task-manager-dashboard-umemasultan-umemasultans-projects.vercel.app",
+        "https://umemasultan11-phase-2.hf.space",
+        "http://umemasultan11-phase-2.hf.space"
     ],
     allow_credentials=True,
     allow_methods=["*"],

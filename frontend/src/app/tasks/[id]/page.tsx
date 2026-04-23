@@ -14,7 +14,7 @@ import { getCurrentUserIdFromToken } from '@/lib/auth';
 export default function TaskDetailPage() {
   const { id } = useParams();
   const router = useRouter();
-  const taskId = Array.isArray(id) ? parseInt(id[0], 10) : parseInt(id, 10);
+  const taskId = Array.isArray(id) ? parseInt(id[0], 10) : parseInt(id || '0', 10);
 
   const [task, setTask] = useState<Task | null>(null);
   const [title, setTitle] = useState('');
@@ -133,12 +133,18 @@ export default function TaskDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-700 dark:via-purple-800/20 dark:to-indigo-800/20 transition-all duration-500">
+      <div className="min-h-screen gradient-bg transition-all duration-500">
         <Navbar />
         <div className="flex">
           <Sidebar />
-          <div className="flex-1 flex items-center justify-center">
-            <p className="text-gray-600 dark:text-gray-400">Loading task...</p>
+          <div className="flex-1 flex items-center justify-center py-20">
+            <div className="glass-card p-8 rounded-3xl">
+              <svg className="animate-spin h-12 w-12 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <p className="text-white/70 text-center mt-4 font-medium">Loading task...</p>
+            </div>
           </div>
         </div>
       </div>
@@ -147,15 +153,23 @@ export default function TaskDetailPage() {
 
   if (!task) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-700 dark:via-purple-800/20 dark:to-indigo-800/20 transition-all duration-500">
+      <div className="min-h-screen gradient-bg transition-all duration-500">
         <Navbar />
         <div className="flex">
           <Sidebar />
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-center">
-              <p className="text-red-500 dark:text-red-400">Task not found</p>
-              <Link href="/" className="text-[#15173D] dark:text-purple-400 hover:underline mt-4 inline-block">
-                Back to Dashboard
+          <div className="flex-1 flex items-center justify-center py-20">
+            <div className="glass-card p-12 rounded-3xl text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-10 h-10 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-black gradient-text mb-3">Task not found</h3>
+              <p className="text-white/70 mb-6">The task you're looking for doesn't exist</p>
+              <Link href="/">
+                <button className="btn-premium">
+                  <span className="relative z-10">Back to Dashboard</span>
+                </button>
               </Link>
             </div>
           </div>
@@ -165,22 +179,37 @@ export default function TaskDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-indigo-900/20 transition-all duration-500">
+    <div className="min-h-screen gradient-bg transition-all duration-500 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/30 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/30 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse-glow"></div>
+      </div>
+
       <Navbar />
-      <div className="flex">
+      <div className="flex relative z-10">
         <Sidebar />
-        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+        <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
             <Link
               href="/"
-              className="inline-flex items-center text-[#050E3C] dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300 mb-5 transition-colors font-semibold"
+              className="inline-flex items-center text-white/90 hover:text-white mb-6 transition-colors font-semibold glass-card px-4 py-2 rounded-xl hover:shadow-glow"
             >
-              ← Back to Dashboard
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to Dashboard
             </Link>
 
             {error && (
-              <div className="mb-4 rounded-md bg-red-50 dark:bg-red-900/30 p-4">
-                <div className="text-sm text-red-700 dark:text-red-400">{error}</div>
+              <div className="mb-6 rounded-2xl glass-card bg-red-500/20 border-red-500/30 p-4 animate-slideInRight">
+                <div className="flex items-center gap-3">
+                  <svg className="w-5 h-5 text-red-300" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-sm text-red-200 font-medium">{error}</span>
+                </div>
               </div>
             )}
 
@@ -208,46 +237,55 @@ export default function TaskDetailPage() {
                 }}
               />
             ) : (
-              <div className="bg-white dark:bg-gray-700 shadow-2xl rounded-xl p-5 transition-colors border border-gray-200 dark:border-gray-600">
-                <div className="mb-3">
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">{task.title}</h2>
+              <div className="glass-card shadow-glow-lg rounded-3xl p-8 transition-all duration-500">
+                <div className="mb-6">
+                  <h2 className="text-3xl font-black gradient-text mb-2">{task.title}</h2>
+                  <div className="h-1 w-20 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-full"></div>
                 </div>
 
-                <div className="mb-5">
-                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap text-sm">{task.description}</p>
+                <div className="mb-6">
+                  <p className="text-white/80 whitespace-pre-wrap leading-relaxed">{task.description || 'No description provided'}</p>
                 </div>
 
-                <div className="mb-5">
-                  <div className="flex flex-wrap items-center">
-                    <span className="mr-3">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Status:</span>
-                    </span>
+                <div className="mb-6">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-semibold text-white/70">Status:</span>
                     <span
-                      className={`px-3 py-1 rounded-xl text-xs font-bold ${
+                      className={`px-4 py-2 rounded-2xl text-xs font-bold shadow-lg ${
                         task.status === 'pending'
                           ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
                           : task.status === 'in-progress'
-                            ? 'bg-gradient-to-r from-[#050E3C] to-purple-600 text-white'
-                            : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
+                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                            : 'bg-gradient-to-r from-green-400 to-emerald-500 text-white'
                       }`}
                     >
-                      {task.status.replace('-', ' ')}
+                      {task.status.replace('-', ' ').toUpperCase()}
                     </span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
-                  <div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 font-semibold">Created At</p>
-                    <p className="text-sm text-gray-900 dark:text-white">{task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                  <div className="glass-card p-4 rounded-2xl">
+                    <p className="text-xs text-white/60 font-semibold mb-1 uppercase tracking-wider">Created At</p>
+                    <p className="text-sm text-white font-medium">{task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</p>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 font-semibold">Last Updated</p>
-                    <p className="text-sm text-gray-900 dark:text-white">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</p>
+                  <div className="glass-card p-4 rounded-2xl">
+                    <p className="text-xs text-white/60 font-semibold mb-1 uppercase tracking-wider">Last Updated</p>
+                    <p className="text-sm text-white font-medium">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</p>
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row sm:justify-end sm:space-x-3 space-y-2 sm:space-y-0 pt-3 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex flex-col sm:flex-row sm:justify-end sm:space-x-3 space-y-3 sm:space-y-0 pt-6 border-t border-white/20">
+                  <Button
+                    onClick={() => setIsEditing(true)}
+                    variant="secondary"
+                    size="md"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Edit Task
+                  </Button>
                   <Button
                     onClick={async () => {
                       try {
@@ -285,6 +323,9 @@ export default function TaskDetailPage() {
                     variant="danger"
                     size="md"
                   >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
                     Delete Task
                   </Button>
                 </div>

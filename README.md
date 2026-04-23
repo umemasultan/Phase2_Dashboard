@@ -1,27 +1,39 @@
-# 📋 Task Manager Dashboard
+# 📋 Task Manager - Phase II Full-Stack Web Application
 
-> A production-ready, full-stack task management platform with enterprise-grade authentication, real-time updates, and a stunning modern interface.
+> A modern multi-user task management web application built with Next.js 16+, FastAPI, and Neon PostgreSQL.
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.104-009688?style=flat-square&logo=fastapi)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=flat-square&logo=typescript)
 ![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-336791?style=flat-square&logo=postgresql)
 
 ## 🌟 Overview
 
-Task Manager Dashboard is a sophisticated web application designed to streamline task management workflows. Built with cutting-edge technologies, it offers a seamless experience for individuals and teams to organize, track, and complete their tasks efficiently.
+Phase II Hackathon project - A full-stack task management application with JWT authentication, user isolation, and persistent storage using Neon Serverless PostgreSQL.
 
-### Key Highlights
+### Key Features
 
-- 🔐 **Enterprise Security** - JWT-based authentication with secure token management
-- 📊 **Smart Dashboard** - Real-time task analytics and status visualization
-- 🎨 **Premium UI/UX** - Gradient designs, smooth animations, and glass-morphism effects
-- 🌓 **Adaptive Theming** - Intelligent dark/light mode with system preference detection
-- ⚡ **High Performance** - Optimized rendering with Next.js 14 App Router
-- 📱 **Mobile-First** - Fully responsive design for all screen sizes
-- 🔄 **RESTful API** - Well-documented, scalable backend architecture
+- 🔐 **JWT Authentication** - Secure user signup/signin with token-based auth
+- 👤 **User Isolation** - Each user sees only their own tasks
+- 📊 **Task CRUD** - Create, Read, Update, Delete tasks with status tracking
+- 🎨 **Modern UI** - Responsive design with dark/light mode
+- ⚡ **Fast API** - RESTful endpoints with FastAPI
+- 🗄️ **Neon PostgreSQL** - Serverless PostgreSQL database
+- 📱 **Mobile-First** - Fully responsive across all devices
 
 ## 🏗️ Architecture
+
+### Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Frontend** | Next.js 16+ (App Router) |
+| **Backend** | Python FastAPI |
+| **ORM** | SQLModel |
+| **Database** | Neon Serverless PostgreSQL |
+| **Authentication** | JWT with shared secret |
+| **Spec-Driven** | Claude Code + Spec-Kit Plus |
 
 ### System Design
 
@@ -29,21 +41,21 @@ Task Manager Dashboard is a sophisticated web application designed to streamline
 ┌─────────────────────────────────────────────────────────────┐
 │                     Client Layer                             │
 │  ┌──────────────────────────────────────────────────────┐  │
-│  │  Next.js 14 (React 18) + TypeScript + Tailwind CSS  │  │
+│  │  Next.js 16 (React 19) + TypeScript + Tailwind CSS  │  │
 │  └──────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
-                            ↕ HTTP/REST
+                            ↕ HTTP/REST + JWT
 ┌─────────────────────────────────────────────────────────────┐
 │                   Application Layer                          │
 │  ┌──────────────────────────────────────────────────────┐  │
-│  │         FastAPI + Pydantic + JWT Auth                │  │
+│  │         FastAPI + SQLModel + JWT Auth                │  │
 │  └──────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
-                            ↕ ORM
+                            ↕ SQLModel ORM
 ┌─────────────────────────────────────────────────────────────┐
 │                    Data Layer                                │
 │  ┌──────────────────────────────────────────────────────┐  │
-│  │         SQLAlchemy + SQLite Database                 │  │
+│  │         Neon Serverless PostgreSQL                   │  │
 │  └──────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -103,8 +115,25 @@ Ensure you have the following installed:
 - **Python** 3.8 or higher
 - **npm** or **yarn**
 - **Git**
+- **Neon PostgreSQL account** (free tier available)
 
-### Installation & Setup
+### 1. Database Setup (Neon PostgreSQL)
+
+#### Create Neon Account
+1. Go to [https://neon.tech](https://neon.tech)
+2. Sign up with GitHub/Google (free tier)
+3. Create a new project: `taskmanager-hackathon`
+4. Select closest region (e.g., AWS US East)
+
+#### Get Connection String
+1. In your Neon dashboard, go to **Connection Details**
+2. Copy the **Connection string** (looks like):
+   ```
+   postgresql://username:password@ep-xxxxx.region.aws.neon.tech/neondb?sslmode=require
+   ```
+3. Save this for the next step
+
+### 2. Backend Setup
 
 ```bash
 # Navigate to backend directory
@@ -122,13 +151,18 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Configure environment variables
+cp .env.example .env
+# Edit .env and add your Neon connection string:
+# DATABASE_URL=postgresql://username:password@ep-xxxxx.region.aws.neon.tech/neondb?sslmode=require
+
 # Run the server
 python start_server.py
 ```
 
 The backend will run on `http://localhost:8000`
 
-### Frontend Setup
+### 3. Frontend Setup
 
 ```bash
 # Navigate to frontend directory
@@ -141,7 +175,25 @@ npm install
 npm run dev
 ```
 
-The frontend will run on `http://localhost:3002`
+The frontend will run on `http://localhost:3000`
+
+### 4. Docker Setup (Alternative - Easiest)
+
+```bash
+# Create .env file
+cp .env.example .env
+
+# Edit .env with your Neon connection string
+# DATABASE_URL=postgresql://username:password@ep-xxxxx.region.aws.neon.tech/neondb?sslmode=require
+
+# Start all services with Docker Compose
+docker-compose up --build
+
+# Access:
+# - Frontend: http://localhost:3000
+# - Backend: http://localhost:8000
+# - API Docs: http://localhost:8000/docs
+```
 
 ## 🎯 Usage Guide
 

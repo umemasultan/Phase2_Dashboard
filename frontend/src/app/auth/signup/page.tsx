@@ -13,6 +13,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,119 +24,195 @@ export default function SignupPage() {
       return;
     }
 
+    setLoading(true);
+    setError('');
+
     try {
-      // Use the API client
       const data = await authApi.register({ name, email, password });
       setToken(data.access_token);
       router.push('/');
       router.refresh();
     } catch (err: any) {
       setError(err.message || 'An error occurred during registration');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-700 dark:via-purple-800/20 dark:to-indigo-800/20 flex flex-col transition-all duration-500">
+    <div className="min-h-screen gradient-bg flex flex-col transition-all duration-500">
       <Navbar />
-      <div className="flex items-center justify-center flex-1 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-6">
-          <div>
-            <h2 className="mt-4 text-center text-2xl font-black bg-gradient-to-r from-[#050E3C] via-purple-600 to-[#050E3C] dark:from-[#393E46] dark:via-purple-400 dark:to-[#393E46] bg-clip-text text-transparent">
-              Create a new account
-            </h2>
-          </div>
-          <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
-            {error && (
-              <div className="rounded-lg bg-red-50 dark:bg-red-900/30 p-3 border-l-4 border-red-500">
-                <div className="text-sm text-red-700 dark:text-red-400">{error}</div>
-              </div>
-            )}
-            <div className="rounded-lg shadow-sm space-y-3">
-              <div>
-                <label htmlFor="name" className="sr-only">
-                  Full Name
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="appearance-none relative block w-full px-4 py-2.5 border-2 border-gray-300 dark:border-gray-500 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent sm:text-sm transition-all"
-                  placeholder="Full Name"
-                />
-              </div>
-              <div>
-                <label htmlFor="email-address" className="sr-only">
-                  Email address
-                </label>
-                <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none relative block w-full px-4 py-2.5 border-2 border-gray-300 dark:border-gray-500 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent sm:text-sm transition-all"
-                  placeholder="Email address"
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="sr-only">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none relative block w-full px-4 py-2.5 border-2 border-gray-300 dark:border-gray-500 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent sm:text-sm transition-all"
-                  placeholder="Password"
-                />
-              </div>
-              <div>
-                <label htmlFor="confirm-password" className="sr-only">
-                  Confirm Password
-                </label>
-                <input
-                  id="confirm-password"
-                  name="confirm-password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="appearance-none relative block w-full px-4 py-2.5 border-2 border-gray-300 dark:border-gray-500 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent sm:text-sm transition-all"
-                  placeholder="Confirm Password"
-                />
-              </div>
+
+      {/* Animated Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-10 w-72 h-72 bg-purple-500/30 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-pink-500/30 rounded-full blur-3xl animate-float" style={{animationDelay: '1.5s'}}></div>
+        <div className="absolute top-1/3 right-1/3 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse-glow"></div>
+      </div>
+
+      <div className="flex items-center justify-center flex-1 py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-md w-full space-y-8 animate-fadeInUp">
+          {/* Premium Glass Card */}
+          <div className="glass-card p-10 shadow-glow-lg">
+            <div className="text-center mb-8">
+              <h2 className="text-4xl font-black mb-2">
+                <span className="gradient-text">Create Account</span>
+              </h2>
+              <p className="text-white/70 text-sm">Join us and start managing your tasks</p>
             </div>
 
-            <div>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              {error && (
+                <div className="glass-card bg-red-500/20 border-red-500/30 p-4 rounded-2xl animate-slideInRight">
+                  <div className="flex items-center gap-3">
+                    <svg className="w-5 h-5 text-red-300" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm text-red-200 font-medium">{error}</span>
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-5">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-semibold text-white/90 mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="input-premium w-full"
+                    placeholder="John Doe"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="email-address" className="block text-sm font-semibold text-white/90 mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    id="email-address"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="input-premium w-full"
+                    placeholder="you@example.com"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="password" className="block text-sm font-semibold text-white/90 mb-2">
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="new-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="input-premium w-full"
+                    placeholder="••••••••"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="confirm-password" className="block text-sm font-semibold text-white/90 mb-2">
+                    Confirm Password
+                  </label>
+                  <input
+                    id="confirm-password"
+                    name="confirm-password"
+                    type="password"
+                    autoComplete="new-password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="input-premium w-full"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <input
+                  id="terms"
+                  name="terms"
+                  type="checkbox"
+                  required
+                  className="h-4 w-4 mt-1 rounded border-white/20 bg-white/10 text-purple-600 focus:ring-purple-500"
+                />
+                <label htmlFor="terms" className="ml-3 text-sm text-white/70">
+                  I agree to the{' '}
+                  <Link href="#" className="text-white font-semibold hover:text-white/90">
+                    Terms of Service
+                  </Link>{' '}
+                  and{' '}
+                  <Link href="#" className="text-white font-semibold hover:text-white/90">
+                    Privacy Policy
+                  </Link>
+                </label>
+              </div>
+
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-gradient-to-r from-[#050E3C] to-purple-600 hover:from-[#050E3C]/90 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                disabled={loading}
+                className="btn-premium w-full relative"
               >
-                Sign up
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  {loading ? (
+                    <>
+                      <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Creating account...
+                    </>
+                  ) : (
+                    <>
+                      Create Account
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </>
+                  )}
+                </span>
               </button>
+            </form>
+
+            <div className="mt-8 text-center">
+              <p className="text-sm text-white/70">
+                Already have an account?{' '}
+                <Link href="/login" className="font-bold text-white hover:text-white/90 transition-colors">
+                  Sign in
+                </Link>
+              </p>
             </div>
-          </form>
-          <div className="text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-              Already have an account?{' '}
-              <Link href="/login" className="font-semibold text-[#050E3C] dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300">
-                Sign in
-              </Link>
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Demo: test@example.com / password123
-            </p>
+          </div>
+
+          {/* Features */}
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="glass-card p-4 rounded-2xl">
+              <div className="text-2xl mb-2">🚀</div>
+              <p className="text-xs text-white/70 font-medium">Fast Setup</p>
+            </div>
+            <div className="glass-card p-4 rounded-2xl">
+              <div className="text-2xl mb-2">🔒</div>
+              <p className="text-xs text-white/70 font-medium">Secure</p>
+            </div>
+            <div className="glass-card p-4 rounded-2xl">
+              <div className="text-2xl mb-2">✨</div>
+              <p className="text-xs text-white/70 font-medium">Free Forever</p>
+            </div>
           </div>
         </div>
       </div>

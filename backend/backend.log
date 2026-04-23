@@ -1,0 +1,285 @@
+INFO:     Will watch for changes in these directories: ['E:\\Hackathon_2\\Phase_2\\backend']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [2660] using WatchFiles
+INFO:     Started server process [17908]
+INFO:     Waiting for application startup.
+2026-04-24 01:06:43,798 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:06:43,798 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("tasks")
+2026-04-24 01:06:43,798 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-04-24 01:06:43,799 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+2026-04-24 01:06:43,799 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-04-24 01:06:43,799 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     Application startup complete.
+INFO:     127.0.0.1:60677 - "GET /api/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62806 - "GET /api/docs HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51569 - "GET /api/auth/test HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49415 - "OPTIONS /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52629 - "OPTIONS /api/tasks HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52629 - "GET /api/tasks HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:52629 - "GET /api/tasks HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:49415 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:63752 - "OPTIONS /api/tasks/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52629 - "GET /api/tasks HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:49415 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:63752 - "GET /api/tasks/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:63752 - "GET /api/tasks/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:49415 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:63752 - "GET /api/tasks/ HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62840 - "OPTIONS /api/auth/login HTTP/1.1" 200 OK
+2026-04-24 01:17:34,437 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:17:34,468 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:17:34,469 INFO sqlalchemy.engine.Engine [generated in 0.00127s] ('umemasultan11@gmail.com',)
+INFO:     127.0.0.1:62840 - "POST /api/auth/login HTTP/1.1" 200 OK
+2026-04-24 01:17:35,455 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:62378 - "OPTIONS /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:17:35,826 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:17:35,827 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:17:35,828 INFO sqlalchemy.engine.Engine [cached since 1.36s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:17:35,857 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:17:35,858 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:17:35,859 INFO sqlalchemy.engine.Engine [cached since 1.391s ago] ('umemasultan11@gmail.com',)
+INFO:     127.0.0.1:62840 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:17:35,888 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:17:35,889 INFO sqlalchemy.engine.Engine [generated in 0.00118s] (7, 100, 0)
+2026-04-24 01:17:35,897 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:17:35,900 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:17:35,901 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:17:35,932 INFO sqlalchemy.engine.Engine [cached since 1.465s ago] ('umemasultan11@gmail.com',)
+INFO:     127.0.0.1:62378 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:17:35,935 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:62840 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:17:35,939 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:17:35,940 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:17:35,940 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:17:35,941 INFO sqlalchemy.engine.Engine [cached since 1.473s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:17:35,942 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:17:35,943 INFO sqlalchemy.engine.Engine [cached since 0.05446s ago] (7, 100, 0)
+INFO:     127.0.0.1:62378 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:17:35,945 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:51036 - "OPTIONS /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51036 - "OPTIONS /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:37:27,225 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:37:27,227 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:37:27,227 INFO sqlalchemy.engine.Engine [cached since 1193s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:37:27,235 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:37:27,235 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:37:27,236 INFO sqlalchemy.engine.Engine [cached since 1193s ago] ('umemasultan11@gmail.com',)
+INFO:     127.0.0.1:55135 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:37:27,242 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:37:27,243 INFO sqlalchemy.engine.Engine [cached since 1191s ago] (7, 100, 0)
+2026-04-24 01:37:27,245 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:51036 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:37:27,251 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:37:27,279 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:37:27,280 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:37:27,280 INFO sqlalchemy.engine.Engine [cached since 1193s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:37:27,283 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:37:27,284 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:37:27,284 INFO sqlalchemy.engine.Engine [cached since 1193s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:37:27,287 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:37:27,288 INFO sqlalchemy.engine.Engine [cached since 1191s ago] (7, 100, 0)
+INFO:     127.0.0.1:51036 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:37:27,294 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:55135 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:37:27,299 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:37:27,302 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:37:27,304 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:37:27,304 INFO sqlalchemy.engine.Engine [cached since 1193s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:37:27,310 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:37:27,310 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:37:27,311 INFO sqlalchemy.engine.Engine [cached since 1193s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:37:27,314 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:37:27,315 INFO sqlalchemy.engine.Engine [cached since 1191s ago] (7, 100, 0)
+INFO:     127.0.0.1:51036 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:37:27,319 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:55135 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:37:27,323 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:42:06,845 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:42:06,846 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:42:06,846 INFO sqlalchemy.engine.Engine [cached since 1472s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:42:06,851 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:42:06,851 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:42:06,851 INFO sqlalchemy.engine.Engine [cached since 1472s ago] ('umemasultan11@gmail.com',)
+INFO:     127.0.0.1:65397 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:42:06,854 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:42:06,855 INFO sqlalchemy.engine.Engine [cached since 1471s ago] (7, 100, 0)
+2026-04-24 01:42:06,854 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:42:06,858 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:42:06,859 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:42:06,859 INFO sqlalchemy.engine.Engine [cached since 1472s ago] ('umemasultan11@gmail.com',)
+INFO:     127.0.0.1:65397 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57534 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:42:06,863 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:42:06,864 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:42:06,868 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:42:06,869 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:42:06,869 INFO sqlalchemy.engine.Engine [cached since 1472s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:42:06,871 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:42:06,871 INFO sqlalchemy.engine.Engine [cached since 1471s ago] (7, 100, 0)
+INFO:     127.0.0.1:57534 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:42:06,874 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:46:40,444 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:40,444 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:40,445 INFO sqlalchemy.engine.Engine [cached since 1746s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:40,448 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:40,449 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:40,449 INFO sqlalchemy.engine.Engine [cached since 1746s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:40,450 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:46:40,451 INFO sqlalchemy.engine.Engine [cached since 1745s ago] (7, 100, 0)
+INFO:     127.0.0.1:59819 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:46:40,453 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:56141 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:46:40,455 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:46:40,465 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:40,466 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:40,466 INFO sqlalchemy.engine.Engine [cached since 1746s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:40,468 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:40,469 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:40,469 INFO sqlalchemy.engine.Engine [cached since 1746s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:40,470 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:46:40,471 INFO sqlalchemy.engine.Engine [cached since 1745s ago] (7, 100, 0)
+INFO:     127.0.0.1:56141 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:46:40,474 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:59819 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:46:40,476 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:46:40,477 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:40,478 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:40,478 INFO sqlalchemy.engine.Engine [cached since 1746s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:40,481 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:40,481 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:40,482 INFO sqlalchemy.engine.Engine [cached since 1746s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:40,483 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:46:40,484 INFO sqlalchemy.engine.Engine [cached since 1745s ago] (7, 100, 0)
+INFO:     127.0.0.1:56141 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:46:40,487 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:59819 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:46:40,489 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:46:42,063 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:42,064 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:42,064 INFO sqlalchemy.engine.Engine [cached since 1748s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:42,066 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:42,066 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:42,066 INFO sqlalchemy.engine.Engine [cached since 1748s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:42,068 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:46:42,069 INFO sqlalchemy.engine.Engine [cached since 1746s ago] (7, 100, 0)
+INFO:     127.0.0.1:59819 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:46:42,072 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:56141 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:46:42,075 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:46:42,088 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:42,089 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:42,089 INFO sqlalchemy.engine.Engine [cached since 1748s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:42,091 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:42,092 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:42,092 INFO sqlalchemy.engine.Engine [cached since 1748s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:42,095 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+INFO:     127.0.0.1:56141 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:46:42,096 INFO sqlalchemy.engine.Engine [cached since 1746s ago] (7, 100, 0)
+2026-04-24 01:46:42,097 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:59819 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:46:42,101 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-04-24 01:46:42,103 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:42,103 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:42,104 INFO sqlalchemy.engine.Engine [cached since 1748s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:42,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-04-24 01:46:42,108 INFO sqlalchemy.engine.Engine SELECT users.email, users.name, users.id, users.hashed_password, users.created_at, users.updated_at 
+FROM users 
+WHERE users.email = ?
+2026-04-24 01:46:42,108 INFO sqlalchemy.engine.Engine [cached since 1748s ago] ('umemasultan11@gmail.com',)
+2026-04-24 01:46:42,110 INFO sqlalchemy.engine.Engine SELECT tasks.title, tasks.description, tasks.status, tasks.id, tasks.created_at, tasks.updated_at, tasks.user_id 
+FROM tasks 
+WHERE tasks.user_id = ?
+ LIMIT ? OFFSET ?
+2026-04-24 01:46:42,111 INFO sqlalchemy.engine.Engine [cached since 1746s ago] (7, 100, 0)
+INFO:     127.0.0.1:56141 - "GET /api/auth/me HTTP/1.1" 200 OK
+2026-04-24 01:46:42,115 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:59819 - "GET /api/7/tasks HTTP/1.1" 200 OK
+2026-04-24 01:46:42,117 INFO sqlalchemy.engine.Engine ROLLBACK

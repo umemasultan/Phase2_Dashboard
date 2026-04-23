@@ -1,23 +1,24 @@
-# Backend-only Dockerfile for Hugging Face Spaces
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Copy backend files
-COPY requirements.txt ./
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements.txt .
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . ./
+# Copy application code
+COPY . .
 
-# Create .env file with default values
-RUN echo "DATABASE_URL=sqlite:///./taskmanager.db" > .env && \
-    echo "SECRET_KEY=your-secret-key-change-in-production-huggingface" >> .env && \
-    echo "BETTER_AUTH_SECRET=your-auth-secret-change-in-production-huggingface" >> .env && \
-    echo "ALGORITHM=HS256" >> .env && \
-    echo "ACCESS_TOKEN_EXPIRE_DAYS=7" >> .env
-
-# Expose port 8000
+# Expose port
 EXPOSE 8000
 
-# Start the FastAPI server
+# Run the application
 CMD ["python", "start_server.py"]

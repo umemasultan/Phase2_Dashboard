@@ -16,7 +16,7 @@ except ImportError:
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
-@router.post("/register", response_model=UserRead)
+@router.post("/register")
 def register(user: UserCreate, session: Session = Depends(get_session)):
     # Check if user already exists
     existing_user = session.exec(select(User).where(User.email == user.email)).first()
@@ -40,7 +40,13 @@ def register(user: UserCreate, session: Session = Depends(get_session)):
     session.commit()
     session.refresh(db_user)
 
-    return db_user
+    # Create access token for the new user (auto-login after registration)
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": db_user.email, "user_id": db_user.id}, expires_delta=access_token_expires
+    )
+
+    return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/login")
 def login(user_credentials: UserLogin, session: Session = Depends(get_session)):

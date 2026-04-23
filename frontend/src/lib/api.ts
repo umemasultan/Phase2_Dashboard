@@ -4,7 +4,12 @@
 // All requests will include JWT token from localStorage
 import { Task, User, convertApiTaskToFrontendTask, convertApiUserToFrontendUser } from '@/types/task';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+// Use relative URL for same-origin deployments (like Hugging Face Spaces)
+// or environment variable for separate deployments
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ||
+  (typeof window !== 'undefined' && window.location.hostname.includes('hf.space')
+    ? '' // Use relative URLs on HF Spaces (same origin)
+    : 'http://localhost:8000');
 
 // Helper function to get token from localStorage
 const getToken = (): string | null => {

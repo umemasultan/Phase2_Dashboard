@@ -14,13 +14,26 @@ except ImportError:
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./taskmanager.db")
 
-engine = create_engine(DATABASE_URL, echo=True)
+# Configure engine based on database type
+if DATABASE_URL.startswith("postgresql"):
+    # PostgreSQL configuration for Neon
+    engine = create_engine(
+        DATABASE_URL,
+        echo=True,
+        pool_pre_ping=True,  # Verify connections before using
+        pool_size=5,
+        max_overflow=10
+    )
+else:
+    # SQLite configuration
+    engine = create_engine(DATABASE_URL, echo=True, connect_args={"check_same_thread": False})
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
+    # Only set pragma for SQLite
     if isinstance(dbapi_connection, sqlite3.Connection):
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON")

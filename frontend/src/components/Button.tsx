@@ -15,19 +15,19 @@ export default function Button({
   className = '',
   ...props
 }: ButtonProps) {
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg';
+  const baseClasses = 'inline-flex items-center justify-center font-bold rounded-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-500 transform hover:scale-105 relative overflow-hidden group';
 
   const variantClasses = {
-    primary: 'bg-gradient-to-r from-[#050E3C] to-purple-600 dark:from-[#050E3C] dark:to-purple-500 text-white hover:from-[#050E3C]/90 hover:to-purple-700 dark:hover:from-[#050E3C] dark:hover:to-purple-600 focus:ring-purple-500',
-    secondary: 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500 focus:ring-gray-500',
-    danger: 'bg-gradient-to-r from-red-600 to-pink-600 dark:from-red-500 dark:to-pink-500 text-white hover:from-red-700 hover:to-pink-700 dark:hover:from-red-600 dark:hover:to-pink-600 focus:ring-red-500',
-    outline: 'border-2 border-gray-300 dark:border-gray-500 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-purple-500'
+    primary: 'btn-premium text-white focus:ring-purple-500',
+    secondary: 'glass-card text-white hover:shadow-glow focus:ring-white/50',
+    danger: 'bg-gradient-to-r from-red-500 to-pink-500 text-white hover:shadow-glow-lg focus:ring-red-500',
+    outline: 'glass-card border-2 border-white/30 text-white hover:border-white/50 hover:shadow-glow focus:ring-white/50'
   };
 
   const sizeClasses = {
-    sm: 'text-xs py-1.5 px-3',
-    md: 'text-sm py-2 px-4',
-    lg: 'text-base py-2.5 px-5'
+    sm: 'text-xs py-2 px-4',
+    md: 'text-sm py-2.5 px-6',
+    lg: 'text-base py-3 px-8'
   };
 
   const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
@@ -35,14 +35,14 @@ export default function Button({
   if (href) {
     return (
       <Link href={href} className={classes}>
-        {children}
+        <span className="relative z-10">{children}</span>
       </Link>
     );
   }
 
   return (
     <button className={classes} {...props}>
-      {children}
+      <span className="relative z-10">{children}</span>
     </button>
   );
 }
