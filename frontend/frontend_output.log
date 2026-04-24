@@ -1,0 +1,33 @@
+
+> task-manager-frontend@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.27.80.1:3000
+- Environments: .env.local, .env
+✓ Ready in 1235ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+○ Compiling / ...
+Theme context not available
+ GET / 200 in 8.1s (next.js: 7.2s, proxy.ts: 254ms, application-code: 600ms)
+Theme context not available
+ GET / 200 in 237ms (next.js: 13ms, proxy.ts: 25ms, application-code: 198ms)
+Theme context not available
+ GET / 200 in 451ms (next.js: 21ms, proxy.ts: 26ms, application-code: 404ms)
+✓ Compiled in 425ms
+ GET / 200 in 301ms (next.js: 132ms, proxy.ts: 72ms, application-code: 97ms)
+✓ Compiled in 860ms
+Theme context not available
+ GET / 200 in 495ms (next.js: 16ms, proxy.ts: 13ms, application-code: 465ms)
+✓ Compiled in 868ms
+✓ Compiled in 1146ms
+Theme context not available
+ GET / 200 in 312ms (next.js: 25ms, proxy.ts: 23ms, application-code: 264ms)
+✓ Compiled in 696ms
+✓ Compiled in 835ms
+Theme context not available
+ GET / 200 in 241ms (next.js: 20ms, proxy.ts: 19ms, application-code: 202ms)
+Theme context not available
+ GET / 200 in 294ms (next.js: 22ms, proxy.ts: 23ms, application-code: 249ms)
