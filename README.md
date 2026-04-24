@@ -1,3 +1,13 @@
+---
+title: Task Manager Dashboard
+emoji: 📋
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+license: mit
+---
+
 # 📋 Task Manager - Phase II Full-Stack Web Application
 
 > A modern multi-user task management web application built with Next.js 16+, FastAPI, and Neon PostgreSQL.
