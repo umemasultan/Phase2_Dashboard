@@ -20,11 +20,14 @@ export default function LoginPage() {
     setError('');
 
     try {
+      console.log('Attempting login with:', { email, password: '***' });
       const data = await authApi.login({ email, password });
+      console.log('Login successful, token received');
       setToken(data.access_token);
       router.push('/');
       router.refresh();
     } catch (err: any) {
+      console.error('Login error:', err);
       setError(err.message || 'Invalid email or password');
     } finally {
       setLoading(false);
@@ -154,10 +157,14 @@ export default function LoginPage() {
             </div>
 
             {/* Demo Credentials */}
-            <div className="mt-6 glass-card bg-white/5 p-4 rounded-xl">
-              <p className="text-xs text-white/60 text-center">
-                <span className="font-semibold text-white/80">Demo:</span> test@example.com / password123
+            <div className="mt-6 p-4 rounded-xl bg-primary/10 border border-primary/30 backdrop-blur-sm">
+              <p className="text-sm text-foreground text-center font-medium">
+                <span className="font-bold text-primary">Demo Accounts:</span>
               </p>
+              <div className="mt-2 space-y-1 text-xs text-foreground/80 text-center">
+                <p>test@example.com / password123</p>
+                <p>demo@example.com / demo123</p>
+              </div>
             </div>
           </div>
 
