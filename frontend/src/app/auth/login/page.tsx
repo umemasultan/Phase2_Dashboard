@@ -159,11 +159,10 @@ export default function LoginPage() {
             {/* Demo Credentials */}
             <div className="mt-4 sm:mt-6 p-3 sm:p-4 rounded-xl bg-primary/10 border border-primary/30 backdrop-blur-sm">
               <p className="text-xs sm:text-sm text-foreground text-center font-medium">
-                <span className="font-bold text-primary">Demo Accounts:</span>
+                <span className="font-bold text-primary">Demo Account:</span>
               </p>
               <div className="mt-2 space-y-1 text-[10px] sm:text-xs text-foreground/80 text-center">
                 <p>test@example.com / password123</p>
-                <p>demo@example.com / demo123</p>
               </div>
             </div>
           </div>
