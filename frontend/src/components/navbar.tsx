@@ -20,18 +20,8 @@ export default function Navbar() {
   const profileMenuRef = useRef<HTMLDivElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
 
-  // Safely get theme context with fallback
-  let theme: 'light' | 'dark' = 'light';
-  let toggleTheme = () => {};
-
-  try {
-    const themeContext = useTheme();
-    theme = themeContext.theme;
-    toggleTheme = themeContext.toggleTheme;
-  } catch (e) {
-    // ThemeProvider not available, use fallback
-    console.log('Theme context not available');
-  }
+  // Get theme context
+  const { theme, toggleTheme } = useTheme();
 
   // Handle scroll effect
   useEffect(() => {
