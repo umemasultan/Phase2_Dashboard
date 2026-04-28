@@ -116,3 +116,29 @@ def delete_task(
     session.delete(task)
     session.commit()
     return {"message": "Task deleted successfully"}
+
+@router.patch("/{task_id}/complete", response_model=TaskRead)
+def toggle_complete(
+    task_id: int,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user)
+):
+    task = session.get(Task, task_id)
+    if not task or task.user_id != current_user.id:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    # Toggle completed status
+    try:
+        from ..models.task import TaskStatus
+    except ImportError:
+        from models.task import TaskStatus
+
+    if task.status == TaskStatus.COMPLETED:
+        task.status = TaskStatus.PENDING
+    else:
+        task.status = TaskStatus.COMPLETED
+
+    session.add(task)
+    session.commit()
+    session.refresh(task)
+    return task

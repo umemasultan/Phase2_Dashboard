@@ -15,19 +15,19 @@ export default function Button({
   className = '',
   ...props
 }: ButtonProps) {
-  const baseClasses = 'inline-flex items-center justify-center font-bold rounded-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-500 transform hover:scale-105 relative overflow-hidden group';
+  const baseClasses = 'inline-flex items-center justify-center font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300';
 
   const variantClasses = {
-    primary: 'btn-premium text-white focus:ring-purple-500',
-    secondary: 'glass-card text-white hover:shadow-glow focus:ring-white/50',
-    danger: 'bg-gradient-to-r from-red-500 to-pink-500 text-white hover:shadow-glow-lg focus:ring-red-500',
-    outline: 'glass-card border-2 border-white/30 text-white hover:border-white/50 hover:shadow-glow focus:ring-white/50'
+    primary: 'btn-premium focus:ring-primary/50',
+    secondary: 'glass-card text-foreground hover:bg-secondary/80 focus:ring-primary/30',
+    danger: 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 focus:ring-red-500',
+    outline: 'glass-card border-2 border-border text-foreground hover:border-primary/50 focus:ring-primary/30'
   };
 
   const sizeClasses = {
-    sm: 'text-xs py-2 px-4',
-    md: 'text-sm py-2.5 px-6',
-    lg: 'text-base py-3 px-8'
+    sm: 'text-xs px-3 py-1.5 sm:px-4 sm:py-2',
+    md: 'text-sm px-4 py-2 sm:px-6 sm:py-2.5',
+    lg: 'text-base px-6 py-2.5 sm:px-8 sm:py-3'
   };
 
   const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
@@ -35,14 +35,14 @@ export default function Button({
   if (href) {
     return (
       <Link href={href} className={classes}>
-        <span className="relative z-10">{children}</span>
+        {children}
       </Link>
     );
   }
 
   return (
     <button className={classes} {...props}>
-      <span className="relative z-10">{children}</span>
+      {children}
     </button>
   );
 }

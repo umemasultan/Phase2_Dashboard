@@ -34,16 +34,16 @@ export default function TaskDetailPage() {
           return;
         }
 
-        // Get current user ID and use the new API endpoint
+        // Get current user ID from token
         const userId = getCurrentUserIdFromToken();
-        let data;
-        if (userId) {
-          // Use the new spec-compliant API endpoint
-          data = await taskApi.getForUser(userId, taskId);
-        } else {
-          // Fallback to the old endpoint if we can't get user ID
-          data = await taskApi.getById(taskId);
+        if (!userId) {
+          console.error('Unable to get user ID from token');
+          router.push('/auth/login');
+          return;
         }
+
+        // Use spec-compliant API endpoint: GET /api/{user_id}/tasks/{id}
+        const data = await taskApi.getForUser(userId, taskId);
         setTask(data);
         setTitle(data.title);
         setDescription(data.description || '');
@@ -53,7 +53,6 @@ export default function TaskDetailPage() {
         if (error instanceof Error && error.message.includes('404')) {
           setTask(null);
         } else if (error instanceof Error && (error.message.includes('Unauthorized') || error.message.includes('401'))) {
-          // Redirect to login if unauthorized
           router.push('/auth/login');
         } else {
           setError(error instanceof Error ? error.message : 'An error occurred while fetching the task');
@@ -73,24 +72,20 @@ export default function TaskDetailPage() {
     }
 
     try {
-      // Get current user ID and use the new API endpoint
+      // Get current user ID from token
       const userId = getCurrentUserIdFromToken();
-      let updatedTask;
-      if (userId) {
-        // Use the new spec-compliant API endpoint
-        updatedTask = await taskApi.updateForUser(userId, taskId, {
-          title: title.trim(),
-          description: description.trim() || '',
-          status
-        });
-      } else {
-        // Fallback to the old endpoint if we can't get user ID
-        updatedTask = await taskApi.update(taskId, {
-          title: title.trim(),
-          description: description.trim() || '',
-          status
-        });
+      if (!userId) {
+        setError('Unable to get user ID. Please login again.');
+        router.push('/auth/login');
+        return;
       }
+
+      // Use spec-compliant API endpoint: PUT /api/{user_id}/tasks/{id}
+      const updatedTask = await taskApi.updateForUser(userId, taskId, {
+        title: title.trim(),
+        description: description.trim() || '',
+        status
+      });
       setTask(updatedTask);
       setIsEditing(false);
       setError('');
@@ -109,17 +104,16 @@ export default function TaskDetailPage() {
     }
 
     try {
-      // Get current user ID and use the new API endpoint
+      // Get current user ID from token
       const userId = getCurrentUserIdFromToken();
-      if (userId) {
-        // Use the new spec-compliant API endpoint
-        await taskApi.deleteForUser(userId, taskId);
-      } else {
-        // Fallback to the old endpoint if we can't get user ID
-        await taskApi.delete(taskId);
+      if (!userId) {
+        setError('Unable to get user ID. Please login again.');
+        router.push('/auth/login');
+        return;
       }
 
-      // Navigate back to dashboard
+      // Use spec-compliant API endpoint: DELETE /api/{user_id}/tasks/{id}
+      await taskApi.deleteForUser(userId, taskId);
       router.push('/');
       router.refresh();
     } catch (err: any) {
@@ -190,11 +184,11 @@ export default function TaskDetailPage() {
       <Navbar />
       <div className="flex relative z-10">
         <Sidebar />
-        <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+        <main className="flex-1 container-padding section-spacing">
           <div className="max-w-3xl mx-auto">
             <Link
               href="/"
-              className="inline-flex items-center text-white/90 hover:text-white mb-6 transition-colors font-semibold glass-card px-4 py-2 rounded-xl hover:shadow-glow"
+              className="inline-flex items-center text-foreground hover:text-primary mb-4 sm:mb-6 transition-colors font-semibold glass-card px-3 sm:px-4 py-2 rounded-lg hover:shadow-lg text-sm sm:text-base"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -203,12 +197,12 @@ export default function TaskDetailPage() {
             </Link>
 
             {error && (
-              <div className="mb-6 rounded-2xl glass-card bg-red-500/20 border-red-500/30 p-4 animate-slideInRight">
-                <div className="flex items-center gap-3">
-                  <svg className="w-5 h-5 text-red-300" fill="currentColor" viewBox="0 0 20 20">
+              <div className="mb-4 sm:mb-6 rounded-lg glass-card bg-red-500/20 border-red-500/30 p-3 sm:p-4 animate-slideInRight">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-red-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-sm text-red-200 font-medium">{error}</span>
+                  <span className="text-xs sm:text-sm text-red-200 font-medium">{error}</span>
                 </div>
               </div>
             )}
@@ -237,26 +231,26 @@ export default function TaskDetailPage() {
                 }}
               />
             ) : (
-              <div className="glass-card shadow-glow-lg rounded-3xl p-8 transition-all duration-500">
-                <div className="mb-6">
-                  <h2 className="text-3xl font-black gradient-text mb-2">{task.title}</h2>
-                  <div className="h-1 w-20 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-full"></div>
+              <div className="glass-card card-padding transition-all duration-500">
+                <div className="mb-4 sm:mb-6">
+                  <h2 className="text-2xl sm:text-3xl font-black gradient-text mb-2">{task.title}</h2>
+                  <div className="h-1 w-16 sm:w-20 bg-gradient-to-r from-primary via-primary/80 to-primary/60 rounded-full"></div>
                 </div>
 
-                <div className="mb-6">
-                  <p className="text-white/80 whitespace-pre-wrap leading-relaxed">{task.description || 'No description provided'}</p>
+                <div className="mb-4 sm:mb-6">
+                  <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed text-sm sm:text-base">{task.description || 'No description provided'}</p>
                 </div>
 
-                <div className="mb-6">
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm font-semibold text-white/70">Status:</span>
+                <div className="mb-4 sm:mb-6">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <span className="text-xs sm:text-sm font-semibold text-muted-foreground">Status:</span>
                     <span
-                      className={`px-4 py-2 rounded-2xl text-xs font-bold shadow-lg ${
+                      className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold ${
                         task.status === 'pending'
-                          ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+                          ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
                           : task.status === 'in-progress'
-                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-                            : 'bg-gradient-to-r from-green-400 to-emerald-500 text-white'
+                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                            : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                       }`}
                     >
                       {task.status.replace('-', ' ').toUpperCase()}
@@ -264,18 +258,18 @@ export default function TaskDetailPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                  <div className="glass-card p-4 rounded-2xl">
-                    <p className="text-xs text-white/60 font-semibold mb-1 uppercase tracking-wider">Created At</p>
-                    <p className="text-sm text-white font-medium">{task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
+                  <div className="glass-card p-3 sm:p-4 rounded-lg">
+                    <p className="text-[10px] sm:text-xs text-muted-foreground font-semibold mb-1 uppercase tracking-wider">Created At</p>
+                    <p className="text-xs sm:text-sm text-foreground font-medium">{task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</p>
                   </div>
-                  <div className="glass-card p-4 rounded-2xl">
-                    <p className="text-xs text-white/60 font-semibold mb-1 uppercase tracking-wider">Last Updated</p>
-                    <p className="text-sm text-white font-medium">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</p>
+                  <div className="glass-card p-3 sm:p-4 rounded-lg">
+                    <p className="text-[10px] sm:text-xs text-muted-foreground font-semibold mb-1 uppercase tracking-wider">Last Updated</p>
+                    <p className="text-xs sm:text-sm text-foreground font-medium">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</p>
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row sm:justify-end sm:space-x-3 space-y-3 sm:space-y-0 pt-6 border-t border-white/20">
+                <div className="flex flex-col sm:flex-row sm:justify-end gap-items pt-4 sm:pt-6 border-t border-border">
                   <Button
                     onClick={() => setIsEditing(true)}
                     variant="secondary"
@@ -290,21 +284,17 @@ export default function TaskDetailPage() {
                     onClick={async () => {
                       try {
                         const userId = getCurrentUserIdFromToken();
-                        if (userId) {
-                          await taskApi.toggleComplete(userId, taskId);
-                          const updatedTask = await taskApi.getForUser(userId, taskId);
-                          setTask(updatedTask);
-                          setStatus(updatedTask.status);
-                        } else {
-                          const newStatus = status === 'completed' ? 'pending' : 'completed';
-                          setStatus(newStatus);
-                          const updatedTask = await taskApi.update(taskId, {
-                            title: title.trim(),
-                            description: description.trim() || '',
-                            status: newStatus
-                          });
-                          setTask(updatedTask);
+                        if (!userId) {
+                          setError('Unable to get user ID. Please login again.');
+                          router.push('/auth/login');
+                          return;
                         }
+
+                        // Use spec-compliant API endpoint: PATCH /api/{user_id}/tasks/{id}/complete
+                        await taskApi.toggleComplete(userId, taskId);
+                        const updatedTask = await taskApi.getForUser(userId, taskId);
+                        setTask(updatedTask);
+                        setStatus(updatedTask.status);
                       } catch (err: any) {
                         if (err.message && (err.message.includes('Unauthorized') || err.message.includes('401'))) {
                           router.push('/auth/login');

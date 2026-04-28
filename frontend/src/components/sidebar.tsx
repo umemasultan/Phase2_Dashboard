@@ -12,8 +12,9 @@ export default function Sidebar() {
   useEffect(() => {
     // Check if screen is mobile on initial render and on resize
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth < 768) {
+      const mobile = window.innerWidth < 1024; // lg breakpoint
+      setIsMobile(mobile);
+      if (mobile) {
         setIsExpanded(false);
       } else {
         setIsExpanded(true);
@@ -49,8 +50,13 @@ export default function Sidebar() {
     'completed': 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
   };
 
+  // Hide sidebar on mobile completely - navigation is in navbar mobile menu
+  if (isMobile) {
+    return null;
+  }
+
   return (
-    <aside className={`${isMobile ? 'fixed inset-y-0 left-0 z-50 shadow-lg' : 'sticky top-0'} border-r bg-card ${isExpanded ? 'w-60' : 'w-16'} transition-all duration-200 h-screen flex flex-col`}>
+    <aside className={`sticky top-0 border-r bg-card ${isExpanded ? 'w-60' : 'w-16'} transition-all duration-200 h-screen flex flex-col`}>
       {/* Header */}
       <div className="p-4 border-b">
         <button

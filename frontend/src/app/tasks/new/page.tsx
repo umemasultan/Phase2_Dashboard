@@ -8,7 +8,7 @@ import Sidebar from '@/components/sidebar';
 import { taskApi } from '@/lib/api';
 import TaskForm from '@/components/TaskForm';
 import Button from '@/components/Button';
-import { getToken } from '@/lib/auth';
+import { getToken, getCurrentUserIdFromToken } from '@/lib/auth';
 
 export default function CreateTaskPage() {
   const [title, setTitle] = useState('');
@@ -33,8 +33,16 @@ export default function CreateTaskPage() {
     }
 
     try {
-      // Use the standard create endpoint which automatically assigns the task to the authenticated user
-      await taskApi.create({
+      // Get current user ID from token
+      const userId = getCurrentUserIdFromToken();
+      if (!userId) {
+        setError('Unable to get user ID. Please login again.');
+        router.push('/auth/login');
+        return;
+      }
+
+      // Use spec-compliant API endpoint: POST /api/{user_id}/tasks
+      await taskApi.createForUser(userId, {
         title: title.trim(),
         description: description.trim() || '',
         status
@@ -59,11 +67,11 @@ export default function CreateTaskPage() {
       <Navbar />
       <div className="flex relative z-10">
         <Sidebar />
-        <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+        <main className="flex-1 container-padding section-spacing">
           <div className="max-w-3xl mx-auto">
             <Link
               href="/"
-              className="inline-flex items-center text-white/90 hover:text-white mb-6 transition-colors font-semibold glass-card px-4 py-2 rounded-xl hover:shadow-glow"
+              className="inline-flex items-center text-foreground hover:text-primary mb-4 sm:mb-6 transition-colors font-semibold glass-card px-3 sm:px-4 py-2 rounded-lg hover:shadow-lg text-sm sm:text-base"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -71,9 +79,9 @@ export default function CreateTaskPage() {
               Back to Dashboard
             </Link>
 
-            <div className="mb-6">
-              <h1 className="text-4xl font-black gradient-text mb-2">Create New Task</h1>
-              <p className="text-white/70">Add a new task to your workflow</p>
+            <div className="mb-4 sm:mb-6">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black gradient-text mb-2">Create New Task</h1>
+              <p className="text-muted-foreground text-sm sm:text-base">Add a new task to your workflow</p>
             </div>
 
             <TaskForm

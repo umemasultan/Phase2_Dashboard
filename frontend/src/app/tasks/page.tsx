@@ -24,7 +24,6 @@ export default function TasksPage() {
       try {
         const token = localStorage.getItem('token');
         if (!token) {
-          // Redirect to login if no token
           router.push('/auth/login');
           return;
         }
@@ -32,22 +31,18 @@ export default function TasksPage() {
         // Get current user ID from token
         const userId = getCurrentUserIdFromToken();
         if (!userId) {
-          // If we can't get user ID from token, fetch it from the API
-          // For now, we'll use the existing endpoint but in a real implementation
-          // we would call an endpoint to get the current user's information
-          const statusFilter = filter !== 'all' ? filter : undefined;
-          const data = await taskApi.getAll(statusFilter);
-          setTasks(data);
-        } else {
-          // Use the new spec-compliant API endpoint
-          const statusFilter = filter !== 'all' ? filter : undefined;
-          const data = await taskApi.getAllForUser(userId, statusFilter);
-          setTasks(data);
+          console.error('Unable to get user ID from token');
+          router.push('/auth/login');
+          return;
         }
+
+        // Use spec-compliant API endpoint: GET /api/{user_id}/tasks
+        const statusFilter = filter !== 'all' ? filter : undefined;
+        const data = await taskApi.getAllForUser(userId, statusFilter);
+        setTasks(data);
         setLoading(false);
       } catch (error: any) {
         console.error('Error fetching tasks:', error);
-        // If it's an authentication error, redirect to login
         if (error.message && (error.message.includes('Unauthorized') || error.message.includes('401'))) {
           router.push('/auth/login');
         }
@@ -56,7 +51,7 @@ export default function TasksPage() {
     };
 
     fetchTasks();
-  }, [filter]);
+  }, [filter, router]);
 
   // Tasks are already filtered by the backend API
   const filteredTasks = tasks;

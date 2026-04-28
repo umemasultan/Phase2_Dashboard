@@ -45,18 +45,18 @@ export default function LoginPage() {
         <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse-glow"></div>
       </div>
 
-      <div className="flex items-center justify-center flex-1 py-12 px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-md w-full space-y-8 animate-fadeInUp">
+      <div className="flex items-center justify-center flex-1 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-md w-full space-y-6 sm:space-y-8 animate-fadeInUp">
           {/* Premium Glass Card */}
-          <div className="glass-card p-10 shadow-glow-lg">
-            <div className="text-center mb-8">
-              <h2 className="text-4xl font-black mb-2">
+          <div className="glass-card p-6 sm:p-10 shadow-glow-lg">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-3xl sm:text-4xl font-black mb-2">
                 <span className="gradient-text">Welcome Back</span>
               </h2>
-              <p className="text-white/70 text-sm">Sign in to continue to your dashboard</p>
+              <p className="text-white/70 text-xs sm:text-sm">Sign in to continue to your dashboard</p>
             </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
               {error && (
                 <div className="glass-card bg-red-500/20 border-red-500/30 p-4 rounded-2xl animate-slideInRight">
                   <div className="flex items-center gap-3">
@@ -68,9 +68,9 @@ export default function LoginPage() {
                 </div>
               )}
 
-              <div className="space-y-5">
+              <div className="space-y-4 sm:space-y-5">
                 <div>
-                  <label htmlFor="email-address" className="block text-sm font-semibold text-white/90 mb-2">
+                  <label htmlFor="email-address" className="block text-xs sm:text-sm font-semibold text-white/90 mb-2">
                     Email Address
                   </label>
                   <input
@@ -81,13 +81,13 @@ export default function LoginPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="input-premium w-full"
+                    className="input-premium w-full text-sm sm:text-base"
                     placeholder="you@example.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-semibold text-white/90 mb-2">
+                  <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-white/90 mb-2">
                     Password
                   </label>
                   <input
@@ -98,13 +98,13 @@ export default function LoginPage() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="input-premium w-full"
+                    className="input-premium w-full text-sm sm:text-base"
                     placeholder="••••••••"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs sm:text-sm gap-3 sm:gap-0">
                 <div className="flex items-center">
                   <input
                     id="remember-me"
@@ -147,8 +147,8 @@ export default function LoginPage() {
               </button>
             </form>
 
-            <div className="mt-8 text-center">
-              <p className="text-sm text-white/70">
+            <div className="mt-6 sm:mt-8 text-center">
+              <p className="text-xs sm:text-sm text-white/70">
                 Don't have an account?{' '}
                 <Link href="/signup" className="font-bold text-white hover:text-white/90 transition-colors">
                   Sign up for free
@@ -157,11 +157,11 @@ export default function LoginPage() {
             </div>
 
             {/* Demo Credentials */}
-            <div className="mt-6 p-4 rounded-xl bg-primary/10 border border-primary/30 backdrop-blur-sm">
-              <p className="text-sm text-foreground text-center font-medium">
+            <div className="mt-4 sm:mt-6 p-3 sm:p-4 rounded-xl bg-primary/10 border border-primary/30 backdrop-blur-sm">
+              <p className="text-xs sm:text-sm text-foreground text-center font-medium">
                 <span className="font-bold text-primary">Demo Accounts:</span>
               </p>
-              <div className="mt-2 space-y-1 text-xs text-foreground/80 text-center">
+              <div className="mt-2 space-y-1 text-[10px] sm:text-xs text-foreground/80 text-center">
                 <p>test@example.com / password123</p>
                 <p>demo@example.com / demo123</p>
               </div>
@@ -169,7 +169,7 @@ export default function LoginPage() {
           </div>
 
           {/* Trust Indicators */}
-          <div className="flex items-center justify-center gap-6 text-white/50 text-xs">
+          <div className="flex items-center justify-center gap-4 sm:gap-6 text-white/50 text-[10px] sm:text-xs">
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />

@@ -10,9 +10,9 @@ export default function FilterBar({ currentFilter, onFilterChange }: FilterBarPr
         <button
           key={status}
           onClick={() => onFilterChange(status)}
-          className={`px-4 py-2 capitalize transition-colors text-xs font-medium whitespace-nowrap ${
+          className={`px-3 sm:px-4 py-2 rounded-lg capitalize transition-colors text-xs sm:text-sm font-medium whitespace-nowrap ${
             currentFilter === status
-              ? 'bg-primary text-primary-foreground'
+              ? 'bg-primary text-primary-foreground shadow-sm'
               : 'bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80'
           }`}
         >

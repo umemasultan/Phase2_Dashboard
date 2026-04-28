@@ -50,18 +50,18 @@ export default function SignupPage() {
         <div className="absolute top-1/3 right-1/3 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse-glow"></div>
       </div>
 
-      <div className="flex items-center justify-center flex-1 py-12 px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-md w-full space-y-8 animate-fadeInUp">
+      <div className="flex items-center justify-center flex-1 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-md w-full space-y-6 sm:space-y-8 animate-fadeInUp">
           {/* Premium Glass Card */}
-          <div className="glass-card p-10 shadow-glow-lg">
-            <div className="text-center mb-8">
-              <h2 className="text-4xl font-black mb-2">
+          <div className="glass-card p-6 sm:p-10 shadow-glow-lg">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-3xl sm:text-4xl font-black mb-2">
                 <span className="gradient-text">Create Account</span>
               </h2>
-              <p className="text-white/70 text-sm">Join us and start managing your tasks</p>
+              <p className="text-white/70 text-xs sm:text-sm">Join us and start managing your tasks</p>
             </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
               {error && (
                 <div className="glass-card bg-red-500/20 border-red-500/30 p-4 rounded-2xl animate-slideInRight">
                   <div className="flex items-center gap-3">
@@ -73,9 +73,9 @@ export default function SignupPage() {
                 </div>
               )}
 
-              <div className="space-y-5">
+              <div className="space-y-4 sm:space-y-5">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-semibold text-white/90 mb-2">
+                  <label htmlFor="name" className="block text-xs sm:text-sm font-semibold text-white/90 mb-2">
                     Full Name
                   </label>
                   <input
@@ -86,13 +86,13 @@ export default function SignupPage() {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="input-premium w-full"
+                    className="input-premium w-full text-sm sm:text-base"
                     placeholder="John Doe"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email-address" className="block text-sm font-semibold text-white/90 mb-2">
+                  <label htmlFor="email-address" className="block text-xs sm:text-sm font-semibold text-white/90 mb-2">
                     Email Address
                   </label>
                   <input
@@ -103,13 +103,13 @@ export default function SignupPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="input-premium w-full"
+                    className="input-premium w-full text-sm sm:text-base"
                     placeholder="you@example.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-semibold text-white/90 mb-2">
+                  <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-white/90 mb-2">
                     Password
                   </label>
                   <input
@@ -120,13 +120,13 @@ export default function SignupPage() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="input-premium w-full"
+                    className="input-premium w-full text-sm sm:text-base"
                     placeholder="••••••••"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="confirm-password" className="block text-sm font-semibold text-white/90 mb-2">
+                  <label htmlFor="confirm-password" className="block text-xs sm:text-sm font-semibold text-white/90 mb-2">
                     Confirm Password
                   </label>
                   <input
@@ -137,7 +137,7 @@ export default function SignupPage() {
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="input-premium w-full"
+                    className="input-premium w-full text-sm sm:text-base"
                     placeholder="••••••••"
                   />
                 </div>
@@ -151,7 +151,7 @@ export default function SignupPage() {
                   required
                   className="h-4 w-4 mt-1 rounded border-white/20 bg-white/10 text-purple-600 focus:ring-purple-500"
                 />
-                <label htmlFor="terms" className="ml-3 text-sm text-white/70">
+                <label htmlFor="terms" className="ml-3 text-xs sm:text-sm text-white/70">
                   I agree to the{' '}
                   <Link href="#" className="text-white font-semibold hover:text-white/90">
                     Terms of Service
@@ -189,8 +189,8 @@ export default function SignupPage() {
               </button>
             </form>
 
-            <div className="mt-8 text-center">
-              <p className="text-sm text-white/70">
+            <div className="mt-6 sm:mt-8 text-center">
+              <p className="text-xs sm:text-sm text-white/70">
                 Already have an account?{' '}
                 <Link href="/login" className="font-bold text-white hover:text-white/90 transition-colors">
                   Sign in
@@ -200,18 +200,18 @@ export default function SignupPage() {
           </div>
 
           {/* Features */}
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="glass-card p-4 rounded-2xl">
-              <div className="text-2xl mb-2">🚀</div>
-              <p className="text-xs text-white/70 font-medium">Fast Setup</p>
+          <div className="grid grid-cols-3 gap-3 sm:gap-4 text-center">
+            <div className="glass-card p-3 sm:p-4 rounded-lg sm:rounded-2xl">
+              <div className="text-xl sm:text-2xl mb-1 sm:mb-2">🚀</div>
+              <p className="text-[10px] sm:text-xs text-white/70 font-medium">Fast Setup</p>
             </div>
-            <div className="glass-card p-4 rounded-2xl">
-              <div className="text-2xl mb-2">🔒</div>
-              <p className="text-xs text-white/70 font-medium">Secure</p>
+            <div className="glass-card p-3 sm:p-4 rounded-lg sm:rounded-2xl">
+              <div className="text-xl sm:text-2xl mb-1 sm:mb-2">🔒</div>
+              <p className="text-[10px] sm:text-xs text-white/70 font-medium">Secure</p>
             </div>
-            <div className="glass-card p-4 rounded-2xl">
-              <div className="text-2xl mb-2">✨</div>
-              <p className="text-xs text-white/70 font-medium">Free Forever</p>
+            <div className="glass-card p-3 sm:p-4 rounded-lg sm:rounded-2xl">
+              <div className="text-xl sm:text-2xl mb-1 sm:mb-2">✨</div>
+              <p className="text-[10px] sm:text-xs text-white/70 font-medium">Free Forever</p>
             </div>
           </div>
         </div>

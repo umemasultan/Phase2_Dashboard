@@ -9,7 +9,7 @@ import { Task, User, convertApiTaskToFrontendTask, convertApiUserToFrontendUser 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ||
   (typeof window !== 'undefined' && window.location.hostname.includes('hf.space')
     ? '' // Use relative URLs on HF Spaces (same origin)
-    : 'http://localhost:8000');
+    : 'http://localhost:8001');
 
 // Helper function to get token from localStorage
 const getToken = (): string | null => {
